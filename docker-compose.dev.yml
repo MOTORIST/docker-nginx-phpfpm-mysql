@@ -1,0 +1,37 @@
+version: '3.7'
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
+
+services:
+  nginx:
+    networks:
+      - internal
+
+  phpfpm:
+    container_name: phpfpm
+    build:
+      args:
+        APP_ENV: dev
+    user: 1000:1000
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+    networks:
+      - internal
+
+  mysql:
+    networks:
+      - internal
+
+  phpmyadmin:
+    networks:
+      - internal
+
+  composer:
+    user: 1000:1000
