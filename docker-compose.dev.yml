@@ -12,6 +12,7 @@ services:
   nginx:
     networks:
       - internal
+  restart: on-failure
 
   phpfpm:
     container_name: phpfpm
@@ -24,14 +25,17 @@ services:
       XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
     networks:
       - internal
+    restart: on-failure
 
   mysql:
     networks:
       - internal
+    restart: on-failure
 
   phpmyadmin:
     networks:
       - internal
+    restart: on-failure
 
   composer:
     user: 1000:1000

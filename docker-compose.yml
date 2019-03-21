@@ -9,6 +9,8 @@ services:
       - "8080:8080"
     links:
       - phpfpm
+    depends_on:
+      - phpfpm
     volumes:
       - "./nginx/logs:/var/log/nginx"
       - "./nginx/conf/nginx.conf:/etc/nginx/nginx.conf"
@@ -17,6 +19,7 @@ services:
       - "./www-frontend:/var/www-frontend"
     environment:
       TZ: Europe/Moscow
+    restart: always
 
   phpfpm:
     container_name: phpfpm
@@ -28,10 +31,14 @@ services:
       - "./www-backend:/var/www-backend"
     links:
       - mysql
+    depends_on:
+      - mysql
+    restart: always
 
   mysql:
     container_name: mysql
     image: mysql:8.0.12
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
     volumes:
@@ -42,6 +49,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    restart: always
 
   phpmyadmin:
     container_name: myadmin
@@ -50,12 +58,15 @@ services:
       - "1234:80"
     links:
       - mysql
+    depends_on:
+      - mysql
+    restart: always
 
   composer:
     container_name: composer
-    image: composer:1.7.1
+    image: composer:latest
     command: 'true'
     volumes:
-      - ./www/itsmylife:/app
+      - ./www-backend:/app
     tty: true
     restart: 'no'
