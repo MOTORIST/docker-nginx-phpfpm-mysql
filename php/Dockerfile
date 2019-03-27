@@ -29,6 +29,10 @@ RUN apt-get update \
 		redis-4.3.0 \
         && docker-php-ext-enable redis imagick
 
+# Install Deployer
+RUN curl -LO https://deployer.org/deployer.phar \
+    && mv deployer.phar /usr/local/bin/dep \
+    && chmod +x /usr/local/bin/dep
 
 # Install Xdebug
 RUN if [ $APP_ENV = "dev" ] ; then \
