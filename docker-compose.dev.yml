@@ -12,7 +12,7 @@ services:
   nginx:
     networks:
       - internal
-  restart: on-failure
+    restart: on-failure
 
   phpfpm:
     container_name: phpfpm
