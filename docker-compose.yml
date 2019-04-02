@@ -17,11 +17,13 @@ services:
       - "./nginx/conf/mime.types:/etc/nginx/mime.types"
       - "./www-backend:/var/www-backend"
       - "./www-frontend:/var/www-frontend"
-    command: /bin/bash -c "envsubst '$$NGINX_ROOT_FRONTEND $$NGINX_ROOT_BACKEND' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst '$$NGINX_ROOT_FRONTEND $$NGINX_ROOT_BACKEND $$NGINX_SERVER_NAME_FRONTEND $$NGINX_SERVER_NAME_BACKEND' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     environment:
       TZ: Europe/Moscow
       NGINX_ROOT_FRONTEND: ${NGINX_ROOT_FRONTEND}
       NGINX_ROOT_BACKEND: ${NGINX_ROOT_BACKEND}
+      NGINX_SERVER_NAME_FRONTEND: ${NGINX_SERVER_NAME_FRONTEND}
+      NGINX_SERVER_NAME_BACKEND: ${NGINX_SERVER_NAME_BACKEND}
     restart: always
 
   phpfpm:

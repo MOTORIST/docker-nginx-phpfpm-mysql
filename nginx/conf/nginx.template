@@ -40,7 +40,7 @@ http {
         listen 80;
         listen [::]:80;
 
-        server_name 84.201.150.106;
+        server_name ${NGINX_SERVER_NAME_FRONTEND};
         root ${NGINX_ROOT_FRONTEND};
 
         location / {
@@ -71,7 +71,7 @@ http {
         listen 8080;
         listen [::]:8080;
 
-        server_name api_server;
+        server_name ${NGINX_SERVER_NAME_BACKEND};
         root        ${NGINX_ROOT_BACKEND};
         index       index.php;
 
