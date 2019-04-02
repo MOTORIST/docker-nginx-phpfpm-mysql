@@ -12,13 +12,16 @@ services:
     depends_on:
       - phpfpm
     volumes:
+      - "./nginx/conf/nginx.template:/etc/nginx/nginx.template"
       - "./nginx/logs:/var/log/nginx"
-      - "./nginx/conf/nginx.conf:/etc/nginx/nginx.conf"
       - "./nginx/conf/mime.types:/etc/nginx/mime.types"
       - "./www-backend:/var/www-backend"
       - "./www-frontend:/var/www-frontend"
+    command: /bin/bash -c "envsubst '$$NGINX_ROOT_FRONTEND $$NGINX_ROOT_BACKEND' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     environment:
       TZ: Europe/Moscow
+      NGINX_ROOT_FRONTEND: ${NGINX_ROOT_FRONTEND}
+      NGINX_ROOT_BACKEND: ${NGINX_ROOT_BACKEND}
     restart: always
 
   phpfpm:
@@ -67,6 +70,6 @@ services:
     image: composer:latest
     command: 'true'
     volumes:
-      - ./www-backend:/app
+      - "./www-backend:/app"
     tty: true
     restart: 'no'

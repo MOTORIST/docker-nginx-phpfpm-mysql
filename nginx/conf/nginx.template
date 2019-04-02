@@ -41,10 +41,10 @@ http {
         listen [::]:80;
 
         server_name 84.201.150.106;
-        root /var/www-frontend/build;
+        root ${NGINX_ROOT_FRONTEND};
 
         location / {
-            index index.html;
+          try_files $uri /index.html;
         }
 
         location ~ \.css {
@@ -71,20 +71,29 @@ http {
         listen 8080;
         listen [::]:8080;
 
-        server_name api;
-        root        /var/www-backend/current/public;
+        server_name api_server;
+        root        ${NGINX_ROOT_BACKEND};
         index       index.php;
 
-        location ~* \.(js|css|gif|jpg|png)$ {
-           expires 30d;
-        }
-
         location / {
-           # Redirect everything that isn't a real file to index.php
-           try_files $uri $uri/ /index.php$is_args$args;
+            if ($request_method = 'OPTIONS') {
+                add_header "Access-Control-Allow-Origin" * always;
+                add_header "Access-Control-Allow-Credentials" 'true' always;
+                add_header "Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, PATCH, OPTIONS" always;
+                add_header "Access-Control-Allow-Headers" "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With,x-csrf-token" always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+
+            try_files $uri $uri/ /index.php?$query_string;
         }
 
         location ~ \.php$ {
+           add_header "Access-Control-Allow-Origin" * always;
+           add_header "Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, PATCH, OPTIONS" always;
+           add_header "Access-Control-Allow-Headers" "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,x-csrf-token,X-Requested-With" always;
            try_files $uri /index.php =404;
            fastcgi_pass phpfpm:9000;
            fastcgi_index index.php;
@@ -93,13 +102,10 @@ http {
            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
            fastcgi_read_timeout 600;
            include fastcgi_params;
-           add_header 'Access-Control-Allow-Origin' '*';
-           add_header 'Access-Control-Allow-Credentials' 'true';
-           add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
-           add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With';
-           if ($request_method = 'OPTIONS') {
-                return 204;
-           }
+        }
+
+        location ~* \.(js|css|gif|jpg|png)$ {
+           expires 30d;
         }
 
         location ~ /\.(ht|svn|git) {
