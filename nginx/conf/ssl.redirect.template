@@ -1,7 +1,7 @@
 server {
     listen 80;
-    #listen [::]:80;
-    server_name ${NGINX_SERVER_NAME_FRONTEND};
+    listen [::]:80;
+    server_name ${NGINX_SERVER_NAME_FRONTEND} ${NGINX_SERVER_NAME_BACKEND};
 
     location / {
         # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.

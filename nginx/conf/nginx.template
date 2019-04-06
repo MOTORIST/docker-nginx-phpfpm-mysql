@@ -40,13 +40,13 @@ http {
 
     server {
         listen ${NGINX_PORT};
-        #listen [::]:${NGINX_PORT};
+        listen [::]:${NGINX_PORT};
 
         server_name ${NGINX_SERVER_NAME_FRONTEND};
         root ${NGINX_ROOT_FRONTEND};
 
         location /.well-known/acme-challenge/ {
-            alias /etc/nginx/ssl/frontend;
+            alias /etc/nginx/ssl/.well-known/acme-challenge/;
         }
 
         location / {
@@ -75,14 +75,14 @@ http {
 
     server {
         listen ${NGINX_PORT};
-        #listen [::]:${NGINX_PORT};
+        listen [::]:${NGINX_PORT};
 
         server_name ${NGINX_SERVER_NAME_BACKEND};
         root        ${NGINX_ROOT_BACKEND};
         index       index.php;
 
         location /.well-known/acme-challenge/ {
-            alias /etc/nginx/ssl/backend;
+            alias /etc/nginx/ssl/.well-known/acme-challenge/;
         }
 
         location / {
