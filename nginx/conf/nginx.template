@@ -40,7 +40,7 @@ http {
 
     server {
         listen ${NGINX_PORT};
-        listen [::]:${NGINX_PORT};
+        #listen [::]:${NGINX_PORT};
 
         server_name ${NGINX_SERVER_NAME_FRONTEND};
         root ${NGINX_ROOT_FRONTEND};
@@ -75,7 +75,7 @@ http {
 
     server {
         listen ${NGINX_PORT};
-        listen [::]:${NGINX_PORT};
+        #listen [::]:${NGINX_PORT};
 
         server_name ${NGINX_SERVER_NAME_BACKEND};
         root        ${NGINX_ROOT_BACKEND};
