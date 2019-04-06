@@ -3,7 +3,7 @@
 set -eu
 
 if [[ $NGINX_SSL_CERT == "yes" ]]; then
-    mkdir /etc/nginx/include/;
+    mkdir -p /etc/nginx/include/;
     envsubst '$$NGINX_ROOT_FRONTEND' < /etc/nginx/ssl.redirect.template > /etc/nginx/include/ssl.redirect.conf
     cat /etc/nginx/ssl_config.template > /etc/nginx/include/ssl_config.conf
 fi
