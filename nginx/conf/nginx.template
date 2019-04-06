@@ -45,6 +45,8 @@ http {
         server_name ${NGINX_SERVER_NAME_FRONTEND};
         root ${NGINX_ROOT_FRONTEND};
 
+        include /etc/nginx/include/*ssl_certificate.conf;
+
         location /.well-known/acme-challenge/ {
             alias /etc/nginx/ssl/.well-known/acme-challenge/;
         }
@@ -80,6 +82,8 @@ http {
         server_name ${NGINX_SERVER_NAME_BACKEND};
         root        ${NGINX_ROOT_BACKEND};
         index       index.php;
+
+        include /etc/nginx/include/*ssl_certificate.conf;
 
         location /.well-known/acme-challenge/ {
             alias /etc/nginx/ssl/.well-known/acme-challenge/;

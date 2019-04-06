@@ -15,6 +15,7 @@ COPY ./conf/mime.types /etc/nginx/mime.types
 COPY ./conf/nginx.template /etc/nginx/nginx.template
 COPY ./conf/ssl.redirect.template /etc/nginx/ssl.redirect.template
 COPY ./conf/ssl_config.template /etc/nginx/ssl_config.template
+COPY ./conf/ssl_certificate.template /etc/nginx/ssl_certificate.template
 
 RUN chmod +x /docker-entrypoint.sh
 

@@ -1,8 +1,5 @@
 version: '3.7'
 
-volumes:
-  acmesh_ssl:
-
 services:
   nginx:
     container_name: nginx
@@ -17,9 +14,9 @@ services:
       - phpfpm
     volumes:
       - "./nginx/logs:/var/log/nginx"
+      - "./nginx/ssl:/etc/nginx/ssl"
       - "./www-backend:/var/www-backend"
       - "./www-frontend:/var/www-frontend"
-      - "acmesh_ssl:/etc/nginx/ssl"
     environment:
       TZ: Europe/Moscow
       NGINX_ROOT_FRONTEND: ${NGINX_ROOT_FRONTEND}
@@ -84,7 +81,7 @@ services:
     container_name: acme
     image: neilpang/acme.sh
     volumes:
-      - "acmesh_ssl:/var/ssl"
+      - "./nginx/ssl:/etc/nginx/ssl"
     depends_on:
       - nginx
     command: 'daemon --reloadcmd "docker restart nginx"'
