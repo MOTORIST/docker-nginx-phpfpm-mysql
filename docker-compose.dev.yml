@@ -39,3 +39,6 @@ services:
 
   composer:
     user: 1000:1000
+
+  acme:
+    restart: on-failure

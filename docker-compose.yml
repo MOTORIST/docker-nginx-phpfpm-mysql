@@ -3,27 +3,27 @@ version: '3.7'
 services:
   nginx:
     container_name: nginx
-    image: nginx:1.15.9
+    build:
+      context: ./nginx
     ports:
       - "80:80"
-      - "8080:8080"
+      - "443:443"
     links:
       - phpfpm
     depends_on:
       - phpfpm
     volumes:
-      - "./nginx/conf/nginx.template:/etc/nginx/nginx.template"
       - "./nginx/logs:/var/log/nginx"
-      - "./nginx/conf/mime.types:/etc/nginx/mime.types"
       - "./www-backend:/var/www-backend"
       - "./www-frontend:/var/www-frontend"
-    command: /bin/bash -c "envsubst '$$NGINX_ROOT_FRONTEND $$NGINX_ROOT_BACKEND $$NGINX_SERVER_NAME_FRONTEND $$NGINX_SERVER_NAME_BACKEND' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     environment:
       TZ: Europe/Moscow
       NGINX_ROOT_FRONTEND: ${NGINX_ROOT_FRONTEND}
       NGINX_ROOT_BACKEND: ${NGINX_ROOT_BACKEND}
       NGINX_SERVER_NAME_FRONTEND: ${NGINX_SERVER_NAME_FRONTEND}
       NGINX_SERVER_NAME_BACKEND: ${NGINX_SERVER_NAME_BACKEND}
+      NGINX_PORT: ${NGINX_PORT}
+      NGINX_SSL_CERT: ${NGINX_SSL_CERT}
     restart: always
 
   phpfpm:
@@ -75,3 +75,11 @@ services:
       - "./www-backend:/app"
     tty: true
     restart: 'no'
+
+  acme:
+    container_name: acme
+    image: neilpang/acme.sh
+    depends_on:
+      - nginx
+    command: 'daemon --reloadcmd "docker restart nginx"'
+    restart: always
