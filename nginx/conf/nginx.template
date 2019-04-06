@@ -45,6 +45,10 @@ http {
         server_name ${NGINX_SERVER_NAME_FRONTEND};
         root ${NGINX_ROOT_FRONTEND};
 
+        location /.well-known/acme-challenge/ {
+            alias /etc/nginx/ssl/frontend;
+        }
+
         location / {
           try_files $uri /index.html;
         }
@@ -76,6 +80,10 @@ http {
         server_name ${NGINX_SERVER_NAME_BACKEND};
         root        ${NGINX_ROOT_BACKEND};
         index       index.php;
+
+        location /.well-known/acme-challenge/ {
+            alias /etc/nginx/ssl/backend;
+        }
 
         location / {
             if ($request_method = 'OPTIONS') {
