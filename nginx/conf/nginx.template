@@ -40,10 +40,9 @@ http {
 
     server {
         listen ${NGINX_PORT};
-        listen [::]:${NGINX_PORT};
-
         server_name ${NGINX_SERVER_NAME_FRONTEND};
         root ${NGINX_ROOT_FRONTEND};
+        index       index.html;
 
         include /etc/nginx/include/*ssl_certificate.conf;
 
@@ -77,8 +76,6 @@ http {
 
     server {
         listen ${NGINX_PORT};
-        listen [::]:${NGINX_PORT};
-
         server_name ${NGINX_SERVER_NAME_BACKEND};
         root        ${NGINX_ROOT_BACKEND};
         index       index.php;

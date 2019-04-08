@@ -3,6 +3,10 @@ server {
     listen [::]:80;
     server_name ${NGINX_SERVER_NAME_FRONTEND} ${NGINX_SERVER_NAME_BACKEND};
 
+    location /.well-known/acme-challenge/ {
+        alias /etc/nginx/ssl/.well-known/acme-challenge/;
+    }
+
     location / {
         # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
         return 301 https://$host$request_uri;

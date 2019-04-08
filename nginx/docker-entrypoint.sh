@@ -7,7 +7,7 @@ chown -R root:www-data /etc/nginx/ssl;
 
 if [[ $NGINX_SSL_CERT == "yes" ]]; then
     mkdir -p /etc/nginx/include;
-    envsubst '$$NGINX_ROOT_FRONTEND' < /etc/nginx/ssl.redirect.template > /etc/nginx/include/ssl.redirect.conf
+    envsubst '$$NGINX_SERVER_NAME_FRONTEND $$NGINX_SERVER_NAME_BACKEND' < /etc/nginx/ssl.redirect.template > /etc/nginx/include/ssl.redirect.conf
     cat /etc/nginx/ssl_config.template > /etc/nginx/include/ssl_config.conf
     cat /etc/nginx/ssl_certificate.template > /etc/nginx/include/ssl_certificate.conf
 fi
