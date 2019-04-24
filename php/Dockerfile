@@ -7,7 +7,7 @@ RUN echo "********** APP_ENV - ${APP_ENV} *************"
 # Install selected extensions and other stuff
 RUN apt-get update \
     && apt-get -y --no-install-recommends install \
-	libcurl4-gnutls-dev \
+	    libcurl4-gnutls-dev \
         openssl \
         libmagickwand-dev \
 	&& docker-php-ext-configure gd \
@@ -17,17 +17,18 @@ RUN apt-get update \
 		--with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-configure pdo_mysql --with-pdo-mysql \
 	&& docker-php-ext-configure mbstring --enable-mbstring \
-        && docker-php-ext-install -j$(nproc) \
-		pdo_mysql \
-		mbstring \
-		curl \
-		zip \
-		gd \
-		sockets \
+    && docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        mbstring \
+        curl \
+        zip \
+        gd \
+        sockets \
+        exif \
 	&& pecl install \
 		imagick \
 		redis-4.3.0 \
-        && docker-php-ext-enable redis imagick
+    && docker-php-ext-enable redis imagick
 
 # Install Deployer
 RUN curl -LO https://deployer.org/deployer.phar \
