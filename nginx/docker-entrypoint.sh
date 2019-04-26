@@ -12,6 +12,6 @@ if [[ $NGINX_SSL_CERT == "yes" ]]; then
     cat /etc/nginx/ssl_certificate.template > /etc/nginx/include/ssl_certificate.conf
 fi
 
-envsubst '$$NGINX_ROOT_FRONTEND $$NGINX_ROOT_BACKEND $$NGINX_SERVER_NAME_FRONTEND $$NGINX_SERVER_NAME_BACKEND $$NGINX_PORT' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
+envsubst '$$NGINX_ROOT_FRONTEND $$NGINX_ROOT_BACKEND $$NGINX_SERVER_NAME_FRONTEND $$NGINX_SERVER_NAME_BACKEND $$NGINX_PORT $$NGINX_CSP_DOMAIN $$NGINX_CSP_DOMAIN_IMG' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
 
 nginx -g "daemon off;"

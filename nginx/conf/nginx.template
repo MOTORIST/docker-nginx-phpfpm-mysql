@@ -51,7 +51,13 @@ http {
         }
 
         location / {
-          try_files $uri /index.html;
+            set $CSP_image  "img-src      'self' data: blob: ${NGINX_CSP_DOMAIN} ${NGINX_CSP_DOMAIN_IMG}";
+            set $CSP_script "script-src   'self' ${NGINX_CSP_DOMAIN}";
+            set $CSP_style  "style-src    'self' ${NGINX_CSP_DOMAIN} 'unsafe-inline'";
+            set $CSP        "default-src  'self' ${NGINX_CSP_DOMAIN}; ${CSP_image} ; ${CSP_script} ; ${CSP_style}";
+            add_header Content-Security-Policy $CSP;
+
+            try_files $uri /index.html;
         }
 
         location ~ \.css {
